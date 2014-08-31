@@ -31,11 +31,15 @@ my %colors = (BLUE => '%B', green => '%g', GREEN => '%G', red => '%r', RED => '%
 #$colors{WHITE} = '%W';
 
 sub load_colors {
-    %saved_colors = LoadFile("$ENV{HOME}/.irssi/colors.yml");
+    my $conf = "$ENV{HOME}/.irssi/colors.yml";
+    if (-f $conf) {
+        %saved_colors = LoadFile($conf);
+    }
 }
 
 sub save_colors {
-    DumpFile("$ENV{HOME}/.irssi/colors.yml", %saved_colors);
+    my $conf = "$ENV{HOME}/.irssi/colors.yml";
+    DumpFile($conf, %saved_colors);
 }
 
 # If someone we've colored (either through the saved colors, or the hash
