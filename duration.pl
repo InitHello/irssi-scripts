@@ -11,10 +11,10 @@ my $VERSION = "2.0";
 my %IRSSI = (
     authors     => 'InitHello',
     contact     => 'inithello@gmail.com',
-    name        => 'age.pl',
+    name        => 'duration.pl',
     description => 'Show time elapsed since date.',
     license     => 'BeerWare 2.0 or later',
-    url         => 'NA',
+    url         => 'http://github.com/InitHello/irssi-scripts',
 );
 
 my $conf = '/home/inithello/.irssi/durations.yml';
@@ -34,7 +34,13 @@ sub show_time
     my ($server, $window, $label, %starttime) = @_;
     my $duration;
     my @durr;
-    my $then = new DateTime(year => $starttime{year}, month => $starttime{month}, day => $starttime{day}, hour => $starttime{hour}, minute => $starttime{minute}, second => $starttime{second}, time_zone => "America/New_York");
+    my $then = new DateTime(year => $starttime{year}, 
+    						month => $starttime{month}, 
+    						day => $starttime{day}, 
+    						hour => $starttime{hour}, 
+    						minute => $starttime{minute}, 
+    						second => $starttime{second}, 
+    						time_zone => Irssi::settings_get_str('dates_timezone'));
     my $dur = DateTime->now() - $then;
     if ($dur->{months} >= 12) { $dur->{years} = int($dur->{months} / 12); $dur->subtract(months => $dur->{years} * 12); }
     if ($dur->{minutes} >= 60) { $dur->{hours} = int($dur->{minutes} / 60); $dur->subtract(minutes => $dur->{hours} * 60); }
@@ -79,10 +85,11 @@ sub show_time
 }
 
 sub add_duration {
-    my ($args, $server, $window) = @_;
-	my ($label, undef) = split / /, $args;
+	print Dumper(\@_);
+    my ($data, $server, $window, $label) = @_;
+    Irssi::print($label);
 	return if defined($durations{$label});
-	my $now = DateTime->now(time_zone => "America/New_York");
+	my $now = DateTime->now(time_zone => Irssi::settings_get_str('dates_timezone'));
 	my %newstamp;
 	$newstamp{year} = $now->year();
 	$newstamp{month} = $now->month();
@@ -95,10 +102,32 @@ sub add_duration {
 	save_durations();
 }
 
+sub duration {
+	my ($data, $server, $window) = @_;
+	my @args = @_;
+	my ($op, $arg, undef) = split / /, $data;
+	if ($op eq 'show') {
+		push(@args, $arg);
+		show_duration(@args);
+	}
+	elsif ($op eq 'save') {
+		save_durations();
+	}
+	elsif ($op eq 'add') {
+		push (@args, $arg);
+		add_duration(@args);
+	}
+	elsif ($op eq 'list') {
+		list_durations(@args);
+	}
+	elsif ($op eq 'load') {
+		load_durations();
+	}
+}
+
 sub show_duration
 {
-	my ($data, $server, $window) = @_;
-	my ($label, undef) = split / /, $data;
+	my ($data, $server, $window, $label) = @_;
 	if (!defined($durations{$label})) {
 		Irssi:print("No datestamp defined for $label.");
 		return;
@@ -109,7 +138,6 @@ sub show_duration
 
 sub save_durations {
     DumpFile($conf, %durations);
-    #Irssi::print("Durations saved to $conf");
 }
 
 sub list_durations {
@@ -126,10 +154,8 @@ sub load_durations {
 	}
 }
 
-Irssi::command_bind('age', \&show_duration);
-Irssi::command_bind('newd', \&add_duration);
-Irssi::command_bind('listd', \&list_durations);
-Irssi::command_bind('loadd', \&load_durations);
+Irssi::command_bind('dates', \&duration); # show add list load
 Irssi::signal_add('setup saved', 'save_durations');
 Irssi::signal_add('setup reread', 'load_durations');
+Irssi::settings_add_str('misc', 'dates_timezone', 'America/New_York');
 
