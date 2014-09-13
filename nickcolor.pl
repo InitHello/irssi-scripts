@@ -1,7 +1,7 @@
 use strict;
 use Irssi 20020101.0250 ();
 use vars qw($VERSION %IRSSI); 
-use YAML::Syck;
+use YAML qw(LoadFile DumpFile);
 use Data::Dumper;
 
 $VERSION = "3";
@@ -26,7 +26,7 @@ my %colors = ();
 
 my %colors = (green => '%g', GREEN => '%G', red => '%r', RED => '%R',
               purple => '%p', PURPLE => '%P', cyan => '%c', CYAN => '%C',
-              magenta => '%m', MAGENTA => '%M', yellow => '%y', BLUE => '%B')
+              magenta => '%m', MAGENTA => '%M', yellow => '%y', BLUE => '%B');
 
 # Uncomment the following lines for light backgrounds.
 
