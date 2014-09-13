@@ -22,15 +22,16 @@ Irssi::theme_register([
 my %saved_colors;
 my %session_colors;
 
-my %colors = (lightblue => '%B', green => '%g', lightgreen => '%G', red => '%r', lightred => '%R',
-              purple => '%p', lightpurple => '%P', yellow => '%y', cyan => '%c', lightcyan => '%C',
-              magenta => '%m', lightmagenta => '%M');
+my %colors = ();
 
-# Comment the previous and uncomment the following line for light backgrounds.
+my %colors = (green => '%g', GREEN => '%G', red => '%r', RED => '%R',
+              purple => '%p', PURPLE => '%P', cyan => '%c', CYAN => '%C',
+              magenta => '%m', MAGENTA => '%M', yellow => '%y', BLUE => '%B')
 
-#my %colors = (black => '%k', gray => '%K', lightblue => '%B', green => '%g', lightgreen => '%G', 
-#              red => '%r', lightred => '%R', purple => '%p', lightpurple => '%P', yellow => '%y', 
-#              cyan => '%c', lightcyan => '%C', magenta => '%m', lightmagenta => '%M');
+# Uncomment the following lines for light backgrounds.
+
+# $colors{black} = '%k';
+# $colors{BLACK} = '%K';
 
 sub load_colors {
     my $conf = "$ENV{HOME}/.irssi/colors.yml";
