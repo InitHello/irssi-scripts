@@ -4,7 +4,7 @@ use warnings;
 
 use Irssi;
 use Irssi::Irc;
-use YAML qw(LoadFile DumpFile);
+use YAML::Syck;
 
 $YAML::Syck::ImplicitUnicode = 1;
 
