@@ -13,7 +13,7 @@ my %IRSSI = (
         authors     => 'InitHello',
         contact     => 'inithello@gmail.com',
         name        => 'slap',
-        description => 'mIRC slap, multilingual',
+        description => 'mIRC slap, multilingual. Yes, I am horrible.',
         license     => 'BeerWare 2.0 or equivalent',
         url         => 'NA',
 );
