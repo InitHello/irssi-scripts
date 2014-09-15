@@ -18,7 +18,7 @@ my %IRSSI = (
         url         => 'NA',
 );
 
-my %slaps = {};
+my %slaps;
 my $slapconf = "$ENV{HOME}/.irssi/slaps.yml";
 
 Irssi::command_bind('slap', \&slap);
@@ -50,7 +50,9 @@ sub saveslaps {
 }
 
 sub listslaps {
-    Irssi::print(Dumper(\%slaps));
+    foreach my $language (keys %slaps) {
+        Irssi::print(ucfirst $language . ": $slaps{$language}");
+    }
 }
 
 sub loadslaps {
