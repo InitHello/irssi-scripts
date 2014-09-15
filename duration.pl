@@ -17,9 +17,9 @@ my %IRSSI = (
     url         => 'http://github.com/InitHello/irssi-scripts',
 );
 
-my $conf = '/home/inithello/.irssi/durations.yml';
+my $conf = '$ENV{HOME}/.irssi/durations.yml';
 my %durations;
-load_durations();
+load_durations;
 
 sub plur {
     my ($number, undef) = @_;
@@ -29,8 +29,7 @@ sub plur {
     return 's';
 }
 
-sub show_time
-{
+sub show_time {
     my ($server, $window, $label, %starttime) = @_;
     my $duration;
     my @durr;
@@ -85,7 +84,6 @@ sub show_time
 }
 
 sub add_duration {
-    print Dumper(\@_);
     my ($data, $server, $window, $label) = @_;
     Irssi::print($label);
     return if defined($durations{$label});
@@ -125,8 +123,7 @@ sub duration {
     }
 }
 
-sub show_duration
-{
+sub show_duration {
     my ($data, $server, $window, $label) = @_;
     if (!defined($durations{$label})) {
         Irssi:print("No datestamp defined for $label.");
@@ -137,7 +134,9 @@ sub show_duration
 }
 
 sub save_durations {
-    DumpFile($conf, %durations);
+    if (-f $conf) {
+        DumpFile($conf, %durations);
+    }
 }
 
 sub list_durations {
@@ -158,4 +157,3 @@ Irssi::command_bind('dates', \&duration); # show add list load
 Irssi::signal_add('setup saved', 'save_durations');
 Irssi::signal_add('setup reread', 'load_durations');
 Irssi::settings_add_str('misc', 'dates_timezone', 'America/New_York');
-

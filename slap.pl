@@ -1,7 +1,6 @@
 use strict;
 use warnings;
 
-use Data::Dumper;
 
 use Irssi;
 use Irssi::Irc;
@@ -31,8 +30,8 @@ Irssi::signal_add('setup reread', 'loadslaps');
 sub slap {
     my ($args, $server, $window) = @_;
     my ($language, $target) = split / /, $args;
-    return if !defined $slaps->{$language};
-    my $slaptext = 'me ' . $slaps->{$language};
+    return if !defined $slaps{$language};
+    my $slaptext = 'me ' . $slaps{$language};
     $slaptext =~ s/\$1/$target/;
     $window->command($slaptext);
 }
@@ -41,7 +40,7 @@ sub addslap {
     my $args = shift;
     my ($language, @slap) = split / /, $args;
     $slaps->{$language} = join ' ', @slap;
-    Irssi::print("Added $language slap as $slaps->{$language}");
+    Irssi::print("Added $language slap as $slaps{$language}");
 }
 
 sub saveslaps {
@@ -51,7 +50,7 @@ sub saveslaps {
 }
 
 sub listslaps {
-    Irssi::print(Dumper(\$slaps));
+    Irssi::print(Dumper(\%slaps));
 }
 
 sub loadslaps {
