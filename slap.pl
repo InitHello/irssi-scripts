@@ -39,7 +39,7 @@ sub slap {
 sub addslap {
     my $args = shift;
     my ($language, @slap) = split / /, $args;
-    $slaps->{$language} = join ' ', @slap;
+    $slaps{$language} = join ' ', @slap;
     Irssi::print("Added $language slap as $slaps{$language}");
 }
 
