@@ -19,7 +19,7 @@ my %IRSSI = (
 );
 
 my %slaps = {};
-my $slapconf = "$ENV{HOME}/.irssi/slaps.yml"
+my $slapconf = "$ENV{HOME}/.irssi/slaps.yml";
 
 Irssi::command_bind('slap', \&slap);
 Irssi::command_bind('addslap', \&addslap);
